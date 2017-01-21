@@ -19,5 +19,6 @@ public class JokesActivity extends ActionBarActivity {
 
         TextView jokesTextView = (TextView) findViewById(R.id.jokes_text);
         jokesTextView.setText(getIntent().getStringExtra(JOKES_TEXT_INTENT_EXTRA));
+
     }
 }

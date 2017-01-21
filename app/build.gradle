@@ -1,15 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.udacity.gradle.builditbigger"
-        minSdkVersion 10
-        targetSdkVersion 22
+        minSdkVersion 15
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
+
     }
     buildTypes {
         release {
@@ -21,9 +24,18 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
-    // Added for AdMob
-    compile 'com.google.android.gms:play-services:7.3.0'
     compile project(path: ':javajokeslib')
     compile project(path: ':androidjokeslib')
+    compile 'com.android.support:appcompat-v7:24.2.0'
+
+    // Added for AdMob
+    compile 'com.google.android.gms:play-services-ads:9.4.0'
+    compile 'com.google.code.findbugs:jsr305:2.0.1'
+    compile project(path: ':backend', configuration: 'android-endpoints')
+
+    compile(group: 'com.google.api-client', name: 'google-api-client-android', version: '1.17.0-rc')
+    {
+        // Exclude play services, since we're not using this yet.
+        exclude(group: 'com.google.android.google-play-services', module: 'google-play-services')
+    }
 }

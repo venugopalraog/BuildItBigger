@@ -6,16 +6,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.udacity.gradle.jokes.JokesActivity;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
 
@@ -42,11 +47,26 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void tellJoke(View view){
-        JavaJokes jokes = new JavaJokes();
+        EndpointsAsyncTask asyncTask = new EndpointsAsyncTask(this);
 
+        asyncTask.setProgressBar(progressBar);
+        asyncTask.execute(this);
+        asyncTask.setListener(new EndpointsAsyncTask.JokeListener() {
+            @Override
+            public void onJokeReceived(String jokeString) {
+                //Launch JokesActivity
+                Intent intent = new Intent(MainActivity.this, JokesActivity.class);
+                intent.putExtra(JokesActivity.JOKES_TEXT_INTENT_EXTRA, jokeString);
+                startActivity(intent);
+            }
+        });
+
+/*
+        JavaJokes jokes = new JavaJokes();
         Intent intent = new Intent(this, JokesActivity.class);
         intent.putExtra(JokesActivity.JOKES_TEXT_INTENT_EXTRA, jokes.getJokes());
         startActivity(intent);
+*/
 
 /*
         JavaJokes jokes = new JavaJokes();
