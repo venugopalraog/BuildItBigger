@@ -45,10 +45,8 @@ public class MyEndpoint {
     public MyBean getJokes() {
         JavaJokes jokes = new JavaJokes();
         MyBean response = new MyBean();
-
-        response.setData("Hi, " + jokes.getJokes());
+        response.setData(jokes.getJokes());
 
         return response;
     }
-
 }
