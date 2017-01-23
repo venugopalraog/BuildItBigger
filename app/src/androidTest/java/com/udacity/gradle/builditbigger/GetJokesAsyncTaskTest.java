@@ -39,7 +39,7 @@ public class GetJokesAsyncTaskTest extends ApplicationTestCase<Application> {
             }
         });
 
-        task.execute();
+        task.execute(getContext());
         signal.await();
         assertFalse(TextUtils.isEmpty(jokeString));
     }
