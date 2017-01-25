@@ -17,3 +17,44 @@ allprojects {
         jcenter()
     }
 }
+
+task testAsyncTest {
+    dependsOn ':backend:appengineRun', ':app:connectedAndroidTest', ':backend:appengineStop'
+}
+
+task testProject {
+    dependsOn(['startDevServer','runMyTests','shutdownDevServer'])
+
+    doLast {
+        println 'launches the GCE local development server, runs all tests, shuts the server down again'
+    }
+}
+
+task startDevServer {
+    description "launches the GCE local development server"
+    dependsOn ':backend:appengineRun'
+    evaluationDependsOn(":backend")
+    project(':backend').appengine.daemon = true
+
+    doLast {
+        println 'launches the GCE local development server'
+    }
+}
+
+task runMyTests {
+    dependsOn ':app:connectedAndroidTest'
+    mustRunAfter "startDevServer"
+
+    doLast {
+        println 'runs all tests'
+    }
+}
+
+task shutdownDevServer {
+    dependsOn ':backend:appengineStop'
+    mustRunAfter "runMyTests"
+
+    doLast {
+        println 'shuts the server down again'
+    }
+}
